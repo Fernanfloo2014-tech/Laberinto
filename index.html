@@ -1,29 +1,43 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>FEED_02</title><style>body{margin:0;overflow:hidden;background:#000;touch-action:none;font-family:monospace}canvas{display:block}#eye{position:fixed;right:15px;top:15px;width:45px;height:45px;background:rgba(255,255,255,.15);border:1px solid #fff;border-radius:50%;z-index:20;display:flex;align-items:center;justify-content:center;color:#fff}#joy{position:fixed;left:20px;bottom:20px;width:110px;height:110px;background:rgba(255,255,255,.08);border-radius:50%;z-index:20;border:1px solid rgba(255,255,255,.2)}#stick{position:absolute;left:35px;top:35px;width:40px;height:40px;background:rgba(255,255,255,.3);border-radius:50%}#look{position:fixed;right:0;top:0;width:60%;height:100%;z-index:5}#rec{position:fixed;left:15px;top:15px;color:red;z-index:12;font-size:12px}#tap{position:fixed;inset:0;background:#000;color:#fff;z-index:100;display:flex;align-items:center;justify-content:center;font-size:20px}.hidden{opacity:0!important}</style><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script></head><body><div id="tap">TAP PARA INICIAR SONIDO</div><div id="rec">● REC 00:13</div><div id="eye">👁️</div><div id="joy"><div id="stick"></div></div><div id="look"></div><script type="module">import*as THREE from'three';
-let audioCtx, ambGain, stepTime=0;
-function initAudio(){audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();const filt=audioCtx.createBiquadFilter();
-osc.type='sawtooth';osc.frequency.value=38;filt.type='lowpass';filt.frequency.value=400;
-gain.gain.value=0.04;osc.connect(filt);filt.connect(gain);gain.connect(audioCtx.destination);osc.start();
-ambGain=gain;const hum=audioCtx.createOscillator();const hg=audioCtx.createGain();hum.frequency.value=60;hg.gain.value=0.015;hum.connect(hg);hg.connect(audioCtx.destination);hum.start();
-}
-function playStep(){if(!audioCtx)return;const now=audioCtx.currentTime;const o=audioCtx.createOscillator();const g=audioCtx.createGain();const f=audioCtx.createBiquadFilter();
-o.frequency.value=80+Math.random()*40;f.frequency.value=300;g.gain.setValueAtTime(0.2,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.3);o.connect(f);f.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+0.3);}
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>FEED_02</title><style>body{margin:0;overflow:hidden;background:#000;touch-action:none;font-family:monospace}canvas{display:block}#eye{position:fixed;right:15px;top:15px;width:45px;height:45px;background:rgba(255,255,255,.15);border:1px solid #fff;border-radius:50%;z-index:20;display:flex;align-items:center;justify-content:center;color:#fff}#fs{position:fixed;right:15px;top:70px;width:45px;height:45px;background:rgba(255,255,255,.15);border:1px solid #fff;border-radius:50%;z-index:20;display:flex;align-items:center;justify-content:center;color:#fff}#joy{position:fixed;left:20px;bottom:20px;width:120px;height:120px;background:rgba(255,255,255,.08);border-radius:50%;z-index:20;border:1px solid rgba(255,255,255,.2)}#stick{position:absolute;left:40px;top:40px;width:40px;height:40px;background:rgba(255,255,255,.35);border-radius:50%}#look{position:fixed;right:0;top:0;width:65%;height:100%;z-index:5}#rec{position:fixed;left:15px;top:15px;color:red;z-index:12;font-size:12px;text-shadow:0 0 5px red}#tap{position:fixed;inset:0;background:#000;color:#fff;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;gap:12px}.hidden{opacity:0!important;pointer-events:none}</style><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script></head><body><div id="tap"><div>👁️ TAP PARA INICIAR</div><div style="font-size:11px;opacity:.6">2 dedos: mover + mirar | ⛶ pantalla completa</div></div><div id="rec">● REC 00:13 FEED_02 [LIVE]</div><div id="eye">👁️</div><div id="fs">⛶</div><div id="joy"><div id="stick"></div></div><div id="look"></div><script type="module">import*as THREE from'three';
+let audioCtx,stepTime=0;
+function initAudio(){audioCtx=new(window.AudioContext||window.webkitAudioContext)();const osc=audioCtx.createOscillator();const g=audioCtx.createGain();const f=audioCtx.createBiquadFilter();osc.type='sawtooth';osc.frequency.value=36;f.type='lowpass';f.frequency.value=380;g.gain.value=0.05;osc.connect(f);f.connect(g);g.connect(audioCtx.destination);osc.start();}
+function playStep(){if(!audioCtx)return;const now=audioCtx.currentTime;const o=audioCtx.createOscillator();const g=audioCtx.createGain();const f=audioCtx.createBiquadFilter();o.frequency.value=85+Math.random()*40;f.frequency.value=320;g.gain.setValueAtTime(0.22,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.22);o.connect(f);f.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+0.22);}
+document.getElementById('tap').addEventListener('click',async e=>{initAudio();try{await document.documentElement.requestFullscreen();await screen.orientation.lock('landscape').catch(()=>{});}catch{} e.currentTarget.style.display='none';});
+document.getElementById('fs').addEventListener('click',async()=>{try{await document.documentElement.requestFullscreen();await screen.orientation.lock('landscape').catch(()=>{});}catch{}});
 
-document.getElementById('tap').addEventListener('click',e=>{initAudio();e.target.style.display='none';});
+const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x050505,0.8,4.5);scene.background=new THREE.Color(0x050505);
+const camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,0.1,100);const renderer=new THREE.WebGLRenderer({antialias:false});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(1);document.body.appendChild(renderer.domElement);
 
-const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x020202,1.5,7);scene.background=new THREE.Color(0x020202);
-const camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,100);const renderer=new THREE.WebGLRenderer({antialias:false});renderer.setSize(innerWidth,innerHeight);document.body.appendChild(renderer.domElement);
-const map=[[1,1,1,1,1,1,1,1],[1,0,0,0,1,0,0,1],[1,0,1,0,1,0,1,1],[1,0,1,0,0,0,0,1],[1,0,1,1,1,1,0,1],[1,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,1]];
-const geo=new THREE.BoxGeometry(1,1.2,1);map.forEach((r,z)=>r.forEach((c,x)=>{if(c==1){const w=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:Math.random()<0.2?0x2a2a1a:0x1a1a1a}));w.position.set(x-4,0.6,z-3);scene.add(w)}}));
+// MAPA xD
+const map=[[1,1,1,1,1,1,1,1,1],[1,0,0,0,1,0,0,0,1],[1,0,1,0,1,0,1,0,1],[1,0,1,0,0,0,1,0,1],[1,0,1,1,1,1,1,0,1],[1,0,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,1,1]];
+const wallGeo=new THREE.BoxGeometry(1.02,2,1.02); // paredes más gruesas, sin rendijas
+map.forEach((r,z)=>r.forEach((c,x)=>{if(c==1){const mat=new THREE.MeshStandardMaterial({color:Math.random()<0.12?0x331111:0x151515,roughness:0.9});const w=new THREE.Mesh(wallGeo,mat);w.position.set(x-4.5,1,z-3);scene.add(w);}}));
+// piso y techo para que no se vea el vacío
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.MeshStandardMaterial({color:0x0a0a0a}));floor.rotation.x=-Math.PI/2;scene.add(floor);
+const ceil=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.MeshStandardMaterial({color:0x080808}));ceil.rotation.x=Math.PI/2;ceil.position.y=2;scene.add(ceil);
+const light=new THREE.PointLight(0xffffff,1.2,6);light.position.set(0,1,0);scene.add(light);scene.add(new THREE.AmbientLight(0x333333,0.5));
+
 let yaw=0,pitch=0,pos=new THREE.Vector3(1.5,0.5,1.5),moveX=0,moveZ=0;
 const joy=document.getElementById('joy'),stick=document.getElementById('stick');
-joy.addEventListener('touchstart',e=>{});
-joy.addEventListener('touchmove',e=>{const rect=joy.getBoundingClientRect();let t=e.touches[0],dx=t.clientX-(rect.left+55),dy=t.clientY-(rect.top+55),dist=Math.min(45,Math.hypot(dx,dy)),ang=Math.atan2(dy,dx);dx=Math.cos(ang)*dist;dy=Math.sin(ang)*dist;stick.style.transform=`translate(${dx}px,${dy}px)`;moveX=dx/45;moveZ=dy/45;e.preventDefault()},{passive:false});
-joy.addEventListener('touchend',()=>{moveX=0;moveZ=0;stick.style.transform='translate(0,0)'});
-const look=document.getElementById('look');look.addEventListener('touchmove',e=>{let t=e.touches[0];yaw-=(t.clientX-(look.lx||t.clientX))*0.004;pitch-=(t.clientY-(look.ly||t.clientY))*0.004;pitch=Math.max(-1.3,Math.min(1.3,pitch));look.lx=t.clientX;look.ly=t.clientY;e.preventDefault()},{passive:false});
-look.addEventListener('touchend',()=>{look.lx=null;look.ly=null});
-document.getElementById('eye').addEventListener('click',()=>{joy.classList.toggle('hidden')});
-function canGo(x,z){const gx=Math.round(x+4),gz=Math.round(z+3);if(gz<0||gx<0||gz>=map.length||gx>=map[0].length)return false;return map[gz][gx]!==1}
-function anim(){requestAnimationFrame(anim);const moving=Math.hypot(moveX,moveZ)>0.1;if(moving){const now=Date.now();if(now-stepTime>380){playStep();stepTime=now;}}
-const s=0.04,fX=Math.sin(yaw),fZ=Math.cos(yaw),rX=Math.cos(yaw),rZ=-Math.sin(yaw);let nx=pos.x+(rX*moveX+fX*moveZ)*s,nz=pos.z+(rZ*moveX+fZ*moveZ)*s;if(canGo(nx,pos.z))pos.x=nx;if(canGo(pos.x,nz))pos.z=nz;camera.position.copy(pos);camera.position.y=0.5+Math.sin(Date.now()*0.008)*(moving?0.05:0.02);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;renderer.render(scene,camera)}anim();
+let joyId=null,lookId=null,lastX=0,lastY=0;
+joy.addEventListener('touchstart',e=>{for(let t of e.changedTouches)if(joyId===null)joyId=t.identifier},{passive:false});
+joy.addEventListener('touchmove',e=>{for(let t of e.touches)if(t.identifier===joyId){const rc=joy.getBoundingClientRect();let dx=t.clientX-(rc.left+60),dy=t.clientY-(rc.top+60),d=Math.min(50,Math.hypot(dx,dy)),a=Math.atan2(dy,dx);dx=Math.cos(a)*d;dy=Math.sin(a)*d;stick.style.transform=`translate(${dx}px,${dy}px)`;moveX=dx/50;moveZ=dy/50;}e.preventDefault()},{passive:false});
+const endJoy=e=>{for(let t of e.changedTouches)if(t.identifier===joyId){joyId=null;moveX=0;moveZ=0;stick.style.transform='translate(0,0)'}};joy.addEventListener('touchend',endJoy);joy.addEventListener('touchcancel',endJoy);
+const look=document.getElementById('look');
+look.addEventListener('touchstart',e=>{for(let t of e.changedTouches)if(lookId===null){lookId=t.identifier;lastX=t.clientX;lastY=t.clientY;}},{passive:false});
+look.addEventListener('touchmove',e=>{for(let t of e.touches)if(t.identifier===lookId){let dx=t.clientX-lastX,dy=t.clientY-lastY;yaw-=dx*0.0045;pitch-=dy*0.0045;pitch=Math.max(-1.3,Math.min(1.3,pitch));lastX=t.clientX;lastY=t.clientY;}e.preventDefault()},{passive:false});
+const endLook=e=>{for(let t of e.changedTouches)if(t.identifier===lookId)lookId=null};look.addEventListener('touchend',endLook);look.addEventListener('touchcancel',endLook);
+document.getElementById('eye').addEventListener('click',()=>{joy.classList.toggle('hidden');document.getElementById('fs').classList.toggle('hidden')});
+
+function canGo(x,z){const gx=Math.round(x+4.5),gz=Math.round(z+3);if(gz<0||gx<0||gz>=map.length||gx>=map[0].length)return false;return map[gz][gx]!==1}
+function anim(){requestAnimationFrame(anim);
+const moving=Math.hypot(moveX,moveZ)>0.08;if(moving&&Date.now()-stepTime>360){playStep();stepTime=Date.now();light.intensity=1.1+Math.random()*0.4;}
+const s=0.04,fX=Math.sin(yaw),fZ=Math.cos(yaw),rX=Math.cos(yaw),rZ=-Math.sin(yaw);
+let nx=pos.x+(rX*moveX+fX*moveZ)*s,nz=pos.z+(rZ*moveX+fZ*moveZ)*s;
+if(canGo(nx,pos.z))pos.x=nx;if(canGo(pos.x,nz))pos.z=nz;
+camera.position.copy(pos);camera.position.y=0.85+Math.sin(Date.now()*0.01)*(moving?0.05:0.01);
+camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;
+light.position.set(pos.x,1.2,pos.z);
+renderer.render(scene,camera);}anim();
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 </script></body></html>
